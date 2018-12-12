@@ -22,7 +22,7 @@ BUILD_DATE=$(shell date '+%Y-%m-%d-%H:%M:%S')
 default: all
 
 help:
-	@echo 'Management commands for DSiSc/msp:'
+	@echo 'Management commands for /DSiSc/msp/:'
 	@echo
 	@echo 'Usage:'
 	@echo '    make lint            Check code style.'
@@ -56,7 +56,7 @@ static-check: fmt spelling lint
 build:
 	@echo "building msp ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
-	go build -v -ldflags "-X github.com/DSiSc/msp/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -X github.com/DSiSc/msp/version.BuildDate=${BUILD_DATE}" ./...
+	go build -v -ldflags "-X github.com//DSiSc/msp//version.GitCommit=${GIT_COMMIT}${GIT_DIRTY} -X github.com//DSiSc/msp//version.BuildDate=${BUILD_DATE}" ./...
 
 vet:
 	@echo "Examine source code and reports suspicious constructs..."
