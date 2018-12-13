@@ -18,6 +18,7 @@ package bccsp
 
 import (
 	"crypto"
+	"crypto/ecdsa"
 	"hash"
 )
 
@@ -42,6 +43,8 @@ type Key interface {
 	// PublicKey returns the corresponding public key part of an asymmetric public/private key pair.
 	// This method returns an error in symmetric key schemes.
 	PublicKey() (Key, error)
+
+	GetPk() *ecdsa.PublicKey
 }
 
 // KeyGenOpts contains options for key-generation with a CSP.

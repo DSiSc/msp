@@ -16,6 +16,7 @@ limitations under the License.
 package sw
 
 import (
+	"crypto/ecdsa"
 	"errors"
 
 	"crypto/sha256"
@@ -62,4 +63,8 @@ func (k *aesPrivateKey) Private() bool {
 // This method returns an error in symmetric key schemes.
 func (k *aesPrivateKey) PublicKey() (bccsp.Key, error) {
 	return nil, errors.New("Cannot call this method on a symmetric key.")
+}
+
+func (k *aesPrivateKey) GetPk() *ecdsa.PublicKey {
+	return nil
 }

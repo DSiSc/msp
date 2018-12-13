@@ -126,6 +126,7 @@ const (
 	configfilename       = "config.yaml"
 	tlscacerts           = "tlscacerts"
 	tlsintermediatecerts = "tlsintermediatecerts"
+	users                = "users"
 )
 
 func SetupBCCSPKeystoreConfig(bccspConfig *factory.FactoryOpts, keystoreDir string) *factory.FactoryOpts {
@@ -208,6 +209,7 @@ func getMspConfig(dir string, ID string, sigid *msp.SigningIdentityInfo) (*msp.M
 	configFile := filepath.Join(dir, configfilename)
 	tlscacertDir := filepath.Join(dir, tlscacerts)
 	tlsintermediatecertsDir := filepath.Join(dir, tlsintermediatecerts)
+	usersDir := filepath.Join(dir, users)
 
 	cacerts, err := getPemMaterialFromDir(cacertDir)
 	if err != nil || len(cacerts) == 0 {
@@ -224,6 +226,13 @@ func getMspConfig(dir string, ID string, sigid *msp.SigningIdentityInfo) (*msp.M
 		//mspLogger.Debugf("Intermediate certs folder not found at [%s]. Skipping. [%s]", intermediatecertsDir, err)
 	} else if err != nil {
 		return nil, errors.WithMessage(err, fmt.Sprintf("failed loading intermediate ca certs at [%s]", intermediatecertsDir))
+	}
+
+	//usercerts, err := getPemMaterialFromDir(usersDir)
+	if os.IsNotExist(err) {
+		//mspLogger.Debugf("Intermediate certs folder not found at [%s]. Skipping. [%s]", intermediatecertsDir, err)
+	} else if err != nil {
+		return nil, errors.WithMessage(err, fmt.Sprintf("failed loading user ca certs at [%s]", usersDir))
 	}
 
 	tlsCACerts, err := getPemMaterialFromDir(tlscacertDir)

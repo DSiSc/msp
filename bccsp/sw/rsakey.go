@@ -16,6 +16,7 @@ limitations under the License.
 package sw
 
 import (
+	"crypto/ecdsa"
 	"crypto/rsa"
 	"crypto/x509"
 	"fmt"
@@ -82,6 +83,11 @@ func (k *rsaPrivateKey) PublicKey() (bccsp.Key, error) {
 	return &rsaPublicKey{&k.privKey.PublicKey}, nil
 }
 
+func (k *rsaPrivateKey) GetPk() *ecdsa.PublicKey {
+	return nil
+}
+
+
 type rsaPublicKey struct {
 	pubKey *rsa.PublicKey
 }
@@ -133,4 +139,8 @@ func (k *rsaPublicKey) Private() bool {
 // This method returns an error in symmetric key schemes.
 func (k *rsaPublicKey) PublicKey() (bccsp.Key, error) {
 	return k, nil
+}
+
+func (k *rsaPublicKey) GetPk() *ecdsa.PublicKey {
+	return nil
 }

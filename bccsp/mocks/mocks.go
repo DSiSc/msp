@@ -18,6 +18,7 @@ package mocks
 
 import (
 	"crypto"
+	"crypto/ecdsa"
 	"errors"
 	"hash"
 	"reflect"
@@ -146,6 +147,10 @@ func (m *MockKey) Private() bool {
 
 func (m *MockKey) PublicKey() (bccsp.Key, error) {
 	return m.PK, m.PKErr
+}
+
+func (m *MockKey) GetPk() *ecdsa.PublicKey {
+	return nil
 }
 
 type SignerOpts struct {

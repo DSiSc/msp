@@ -8,6 +8,7 @@ package msp
 
 import (
 	"bytes"
+	"crypto/ecdsa"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"fmt"
@@ -17,6 +18,7 @@ import (
 	"github.com/DSiSc/msp/bccsp"
 	m "github.com/DSiSc/msp/protos/msp"
 	errors "github.com/pkg/errors"
+	"github.com/DSiSc/crypto-suite/crypto"
 )
 
 func (msp *bccspmsp) getCertifiersIdentifier(certRaw []byte) ([]byte, error) {
@@ -167,6 +169,13 @@ func (msp *bccspmsp) setupAdmins(conf *m.FabricMSPConfig) error {
 	msp.admins = make([]Identity, len(conf.Admins))
 	for i, admCert := range conf.Admins {
 		id, _, err := msp.getIdentityFromConf(admCert)
+		v,_ := id.(*identity)
+		//fmt.Println(v.pk.GetPk())
+		var pk *ecdsa.PublicKey = v.pk.GetPk()
+
+		adminAddress := crypto.PubkeyToAddress(*pk)
+		fmt.Println(adminAddress)
+
 		if err != nil {
 			return err
 		}
