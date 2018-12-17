@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/DSiSc/msp/protos/msp"
+	"github.com/DSiSc/craft/types"
 )
 
 // IdentityDeserializer is implemented by both MSPManger and MSP
@@ -85,6 +86,8 @@ type MSP interface {
 
 	// GetTLSIntermediateCerts returns the TLS intermediate root certificates for this MSP
 	GetTLSIntermediateCerts() [][]byte
+
+	GetUsers() (map[types.Address]Identity, error)
 
 	// Validate checks whether the supplied identity is valid
 	Validate(id Identity) error

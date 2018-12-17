@@ -19,6 +19,7 @@ import (
 	m "github.com/DSiSc/msp/protos/msp"
 	"github.com/golang/protobuf/proto"
 	"github.com/pkg/errors"
+	"github.com/DSiSc/craft/types"
 )
 
 // mspSetupFuncType is the prototype of the setup function
@@ -69,6 +70,8 @@ type bccspmsp struct {
 
 	// list of admin identities
 	admins []Identity
+
+	users map[types.Address]Identity
 
 	// the crypto provider
 	bccsp bccsp.BCCSP
@@ -259,6 +262,16 @@ func (msp *bccspmsp) GetDefaultSigningIdentity() (SigningIdentity, error) {
 	}
 
 	return msp.signer, nil
+}
+
+func (msp *bccspmsp) GetUsers() (map[types.Address]Identity, error) {
+	//mspLogger.Debugf("Obtaining default signing identity")
+
+	if msp.users == nil {
+		return nil, errors.New("this MSP does not possess user identitys")
+	}
+
+	return msp.users, nil
 }
 
 // GetSigningIdentity returns a specific signing

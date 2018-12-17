@@ -19,6 +19,7 @@ import (
 	m "github.com/DSiSc/msp/protos/msp"
 	errors "github.com/pkg/errors"
 	"github.com/DSiSc/crypto-suite/crypto"
+	"github.com/DSiSc/craft/types"
 )
 
 func (msp *bccspmsp) getCertifiersIdentifier(certRaw []byte) ([]byte, error) {
@@ -183,6 +184,30 @@ func (msp *bccspmsp) setupAdmins(conf *m.FabricMSPConfig) error {
 		msp.admins[i] = id
 
 	}
+
+	return nil
+}
+
+func (msp *bccspmsp) setupUsers(conf *m.FabricMSPConfig) error {
+	// make and fill the set of admin certs (if present)
+	msp.users = make(map[types.Address]Identity)
+	for _, userCert := range conf.Users {
+		id, _, err := msp.getIdentityFromConf(userCert)
+		v,_ := id.(*identity)
+		//fmt.Println(v.pk.GetPk())
+		var pk *ecdsa.PublicKey = v.pk.GetPk()
+
+		userAddress := crypto.PubkeyToAddress(*pk)
+		fmt.Println(userAddress)
+
+		if err != nil {
+			return err
+		}
+
+		msp.users[userAddress] = id
+
+	}
+	fmt.Println(msp.users)
 
 	return nil
 }
@@ -400,6 +425,11 @@ func (msp *bccspmsp) preSetupV1(conf *m.FabricMSPConfig) error {
 
 	// Setup Admins
 	if err := msp.setupAdmins(conf); err != nil {
+		return err
+	}
+
+	// Setup Users
+	if err := msp.setupUsers(conf); err != nil {
 		return err
 	}
 

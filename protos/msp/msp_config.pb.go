@@ -122,6 +122,9 @@ type FabricMSPConfig struct {
 	// fabric_node_ous contains the configuration to distinguish clients from peers from orderers
 	// based on the OUs.
 	FabricNodeOus        *FabricNodeOUs `protobuf:"bytes,11,opt,name=fabric_node_ous,json=fabricNodeOus" json:"fabric_node_ous,omitempty"`
+
+	Users [][]byte `protobuf:"bytes,12,rep,name=users,proto3" json:"users,omitempty"`
+
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -175,6 +178,13 @@ func (m *FabricMSPConfig) GetIntermediateCerts() [][]byte {
 func (m *FabricMSPConfig) GetAdmins() [][]byte {
 	if m != nil {
 		return m.Admins
+	}
+	return nil
+}
+
+func (m *FabricMSPConfig) GetUsers() [][]byte {
+	if m != nil {
+		return m.Users
 	}
 	return nil
 }

@@ -228,7 +228,7 @@ func getMspConfig(dir string, ID string, sigid *msp.SigningIdentityInfo) (*msp.M
 		return nil, errors.WithMessage(err, fmt.Sprintf("failed loading intermediate ca certs at [%s]", intermediatecertsDir))
 	}
 
-	//usercerts, err := getPemMaterialFromDir(usersDir)
+	usercerts, err := getPemMaterialFromDir(usersDir)
 	if os.IsNotExist(err) {
 		//mspLogger.Debugf("Intermediate certs folder not found at [%s]. Skipping. [%s]", intermediatecertsDir, err)
 	} else if err != nil {
@@ -345,6 +345,7 @@ func getMspConfig(dir string, ID string, sigid *msp.SigningIdentityInfo) (*msp.M
 	// Compose FabricMSPConfig
 	fmspconf := &msp.FabricMSPConfig{
 		Admins:            admincert,
+		Users:             usercerts,
 		RootCerts:         cacerts,
 		IntermediateCerts: intermediatecerts,
 		SigningIdentity:   sigid,
